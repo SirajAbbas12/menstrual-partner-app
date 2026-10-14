@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/theme/app_theme.dart';
 
 enum CyclePhase { menstrual, follicular, ovulation, luteal }
@@ -31,9 +30,9 @@ extension CyclePhaseInfo on CyclePhase {
       };
 
   IconData get icon => switch (this) {
-        CyclePhase.menstrual => LucideIcons.droplet,
-        CyclePhase.follicular => LucideIcons.sprout,
-        CyclePhase.ovulation => LucideIcons.sun,
-        CyclePhase.luteal => LucideIcons.cloudRain,
+        CyclePhase.menstrual => Icons.water_drop,
+        CyclePhase.follicular => Icons.spa,
+        CyclePhase.ovulation => Icons.wb_sunny,
+        CyclePhase.luteal => Icons.cloud,
       };
 }
