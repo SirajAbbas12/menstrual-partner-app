@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
-import 'features/cycle/presentation/dashboard_screen.dart';
+import 'shared/widgets/app_shell.dart';
 
 void main() => runApp(const ProviderScope(child: MyApp()));
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cycle Partner',
       theme: AppTheme.light(),
-      home: const DashboardScreen(),
+      home: const AppShell(),
     );
   }
 }
