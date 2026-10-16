@@ -1,22 +1,70 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/cycle_calculator.dart';
 import '../domain/cycle_phase.dart';
+import '../providers/cycle_provider.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
-  static const int cycleLength = 28;
+  Future<void> _pickDate(BuildContext context, WidgetRef ref) async {
+    final s = ref.read(cycleProvider);
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: s.lastPeriod ?? now,
+      firstDate: now.subtract(const Duration(days: 120)),
+      lastDate: now,
+      helpText: 'Last period kab shuru hua?',
+    );
+    if (picked != null) {
+      await ref.read(cycleProvider.notifier).save(picked, s.cycleLength);
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = ref.watch(cycleProvider);
+    final theme = Theme.of(context);
+
+    if (s.lastPeriod == null) {
+      return SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.calendar_month,
+                    size: 56, color: AppColors.rose),
+                const SizedBox(height: 16),
+                Text('Shuru karte hain',
+                    style: theme.textTheme.headlineSmall),
+                const SizedBox(height: 8),
+                const Text(
+                  'Last period ki date chuno, app aaj ka phase khud nikal lega.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                FilledButton(
+                  onPressed: () => _pickDate(context, ref),
+                  child: const Text('Date chuno'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final len = s.cycleLength;
     final info = CycleCalculator.calculate(
-      lastPeriodStart: DateTime.now().subtract(const Duration(days: 10)),
-      cycleLength: cycleLength,
+      lastPeriodStart: s.lastPeriod!,
+      cycleLength: len,
     );
     final phase = info.phase;
-    final theme = Theme.of(context);
     final dark =
         HSLColor.fromColor(phase.color).withLightness(0.26).toColor();
 
@@ -25,8 +73,20 @@ class DashboardScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
           children: [
-            Text('Aaj ka din', style: theme.textTheme.headlineSmall),
-            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: Text('Aaj ka din',
+                      style: theme.textTheme.headlineSmall),
+                ),
+                TextButton.icon(
+                  onPressed: () => _pickDate(context, ref),
+                  icon: const Icon(Icons.edit_calendar, size: 18),
+                  label: const Text('Date badlo'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
@@ -46,16 +106,14 @@ class DashboardScreen extends StatelessWidget {
                         width: 112,
                         height: 112,
                         child: CustomPaint(
-                          painter:
-                              _RingPainter(info.cycleDay / cycleLength),
+                          painter: _RingPainter(info.cycleDay / len),
                           child: Center(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Text('Day',
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13)),
+                                        color: Colors.white, fontSize: 13)),
                                 Text('${info.cycleDay}',
                                     style: const TextStyle(
                                         color: Colors.white,
