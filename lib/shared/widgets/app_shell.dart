@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../features/cycle/presentation/dashboard_screen.dart';
+import '../../features/guide/guide_screen.dart';
 import '../../features/logger/log_screen.dart';
 
 class AppShell extends StatefulWidget {
@@ -16,7 +17,7 @@ class _AppShellState extends State<AppShell> {
   static const _pages = <Widget>[
     DashboardScreen(),
     LogScreen(),
-    _Placeholder('Partner Guide'),
+    GuideScreen(),
     _Placeholder('Premium'),
   ];
 
