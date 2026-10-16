@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/storage/local_store.dart';
 import '../../core/theme/app_theme.dart';
 
 class LogScreen extends StatefulWidget {
@@ -34,12 +35,29 @@ class _LogScreenState extends State<LogScreen> {
   final _notes = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final log = LocalStore.getLog(DateTime.now());
+    if (log != null) {
+      _mood = log['mood'] as int?;
+      _selected.addAll(((log['symptoms'] as List?) ?? []).cast<String>());
+      _notes.text = (log['notes'] as String?) ?? '';
+    }
+  }
+
+  @override
   void dispose() {
     _notes.dispose();
     super.dispose();
   }
 
-  void _save() {
+  Future<void> _save() async {
+    await LocalStore.saveLog(DateTime.now(), {
+      'mood': _mood,
+      'symptoms': _selected.toList(),
+      'notes': _notes.text,
+    });
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Aaj ka log save ho gaya')),
     );
@@ -130,7 +148,8 @@ class _LogScreenState extends State<LogScreen> {
             controller: _notes,
             maxLines: 4,
             decoration: InputDecoration(
-              hintText: 'Aaj kaisa feel hua? Kuch khaas likhna ho to yahan likho',
+              hintText:
+                  'Aaj kaisa feel hua? Kuch khaas likhna ho to yahan likho',
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(

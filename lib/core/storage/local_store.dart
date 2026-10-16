@@ -19,4 +19,14 @@ class LocalStore {
     await _box.put('lastPeriod', date.toIso8601String());
     await _box.put('cycleLength', length);
   }
+
+  static String _logKey(DateTime d) => 'log_${d.year}-${d.month}-${d.day}';
+
+  static Map<String, dynamic>? getLog(DateTime d) {
+    final v = _box.get(_logKey(d));
+    return v == null ? null : Map<String, dynamic>.from(v as Map);
+  }
+
+  static Future<void> saveLog(DateTime d, Map<String, dynamic> data) =>
+      _box.put(_logKey(d), data);
 }
