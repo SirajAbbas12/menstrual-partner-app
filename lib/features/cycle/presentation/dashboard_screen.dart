@@ -5,6 +5,7 @@ import '../../../core/theme/app_theme.dart';
 import '../domain/cycle_calculator.dart';
 import '../domain/cycle_phase.dart';
 import '../providers/cycle_provider.dart';
+import 'cycle_length_sheet.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -85,6 +86,14 @@ class DashboardScreen extends ConsumerWidget {
                   label: const Text('Date badlo'),
                 ),
               ],
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: ActionChip(
+                avatar: const Icon(Icons.tune, size: 18),
+                label: Text('Cycle: $len din (badlo)'),
+                onPressed: () => showCycleLengthSheet(context, ref),
+              ),
             ),
             const SizedBox(height: 12),
             Container(
