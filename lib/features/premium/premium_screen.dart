@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../core/theme/app_theme.dart';
 import '../cycle/providers/cycle_provider.dart';
 import 'cycle_wheel.dart';
+import 'baby_planning_card.dart';
 
 class PremiumScreen extends ConsumerStatefulWidget {
   const PremiumScreen({super.key});
@@ -105,6 +106,10 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
         Text('Safe Days', style: theme.textTheme.titleMedium),
         const SizedBox(height: 10),
         _safeDays(s),
+        const SizedBox(height: 22),
+        Text('Baby planning', style: theme.textTheme.titleMedium),
+        const SizedBox(height: 10),
+        BabyPlanningCard(settings: s),
         const SizedBox(height: 22),
         Text('Traditional manyata (manoranjan)',
             style: theme.textTheme.titleMedium),
