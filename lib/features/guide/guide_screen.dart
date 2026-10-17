@@ -4,6 +4,7 @@ import '../../core/theme/app_theme.dart';
 import '../cycle/domain/cycle_calculator.dart';
 import '../cycle/domain/cycle_phase.dart';
 import '../cycle/providers/cycle_provider.dart';
+import 'wellness_card.dart';
 
 typedef _Tips = ({List<String> dos, List<String> donts, String say});
 
@@ -155,6 +156,8 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
               icon: Icons.cancel,
               color: AppColors.menstrual,
               items: tips.donts),
+          const SizedBox(height: 14),
+          WellnessCard(phase: _phase),
           const SizedBox(height: 14),
           Card(
             child: Padding(
