@@ -3,6 +3,7 @@ import '../../core/theme/app_theme.dart';
 import '../../features/cycle/presentation/dashboard_screen.dart';
 import '../../features/guide/guide_screen.dart';
 import '../../features/logger/log_screen.dart';
+import '../../features/premium/premium_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -18,7 +19,7 @@ class _AppShellState extends State<AppShell> {
     DashboardScreen(),
     LogScreen(),
     GuideScreen(),
-    _Placeholder('Premium'),
+    PremiumScreen(),
   ];
 
   @override
@@ -48,20 +49,6 @@ class _AppShellState extends State<AppShell> {
               selectedIcon: Icon(Icons.workspace_premium),
               label: 'Premium'),
         ],
-      ),
-    );
-  }
-}
-
-class _Placeholder extends StatelessWidget {
-  final String title;
-  const _Placeholder(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Text(title, style: Theme.of(context).textTheme.headlineSmall),
       ),
     );
   }
