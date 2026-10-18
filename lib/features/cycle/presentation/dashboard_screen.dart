@@ -6,6 +6,7 @@ import '../domain/cycle_calculator.dart';
 import '../domain/cycle_phase.dart';
 import '../providers/cycle_provider.dart';
 import 'cycle_length_sheet.dart';
+import 'home_extras.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -167,6 +168,10 @@ class DashboardScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 18),
+            WeekStrip(lastPeriod: s.lastPeriod!, cycleLength: len),
+            const SizedBox(height: 16),
+            InfoCards(lastPeriod: s.lastPeriod!, cycleLength: len),
             const SizedBox(height: 22),
             Text('Cycle ke 4 phases', style: theme.textTheme.titleMedium),
             const SizedBox(height: 10),
