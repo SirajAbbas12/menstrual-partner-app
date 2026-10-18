@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import 'situations_screen.dart';
+import 'messages_screen.dart';
 
 class GuideShortcuts extends StatelessWidget {
   const GuideShortcuts({super.key});
@@ -15,6 +16,15 @@ class GuideShortcuts extends StatelessWidget {
           sub: 'Chidchida, rona, dard: kya bolo, kya mat bolo',
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const SituationsScreen()),
+          ),
+        ),
+        const SizedBox(height: 10),
+        _Tile(
+          icon: Icons.chat_bubble_outline,
+          title: 'Caring messages',
+          sub: 'Tayyar messages: copy karo ya WhatsApp par bhejo',
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const MessagesScreen()),
           ),
         ),
       ],
