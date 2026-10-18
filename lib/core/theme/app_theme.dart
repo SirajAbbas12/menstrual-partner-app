@@ -5,6 +5,9 @@ class AppColors {
   static const rose = Color(0xFFBE3455);
   static const plum = Color(0xFF4A1D3D);
   static const cream = Color(0xFFFFF8F6);
+  static const blush = Color(0xFFFFF1F5);
+  static const blushDeep = Color(0xFFFBDDE6);
+  static const pinkLine = Color(0xFFF5CDD9);
   static const menstrual = Color(0xFFB3261E);
   static const follicular = Color(0xFF2E7D5B);
   static const ovulation = Color(0xFFB45309);
@@ -17,9 +20,9 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.rose,
-        surface: AppColors.cream,
+        surface: AppColors.blush,
       ),
-      scaffoldBackgroundColor: AppColors.cream,
+      scaffoldBackgroundColor: AppColors.blush,
     );
     return base.copyWith(
       textTheme: GoogleFonts.nunitoTextTheme(base.textTheme)
@@ -39,7 +42,7 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Color(0xFFF0DDD9)),
+          side: const BorderSide(color: AppColors.pinkLine),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -49,6 +52,10 @@ class AppTheme {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14)),
         ),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: Colors.white,
+        indicatorColor: AppColors.blushDeep,
       ),
     );
   }
