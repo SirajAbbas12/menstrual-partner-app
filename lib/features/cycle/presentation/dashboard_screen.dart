@@ -7,6 +7,7 @@ import '../domain/cycle_phase.dart';
 import '../providers/cycle_provider.dart';
 import 'cycle_length_sheet.dart';
 import 'home_extras.dart';
+import '../../messages/today_message_card.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -161,6 +162,8 @@ class DashboardScreen extends ConsumerWidget {
             WeekStrip(lastPeriod: s.lastPeriod!, cycleLength: len),
             const SizedBox(height: 16),
             InfoCards(lastPeriod: s.lastPeriod!, cycleLength: len),
+            const SizedBox(height: 16),
+            TodayMessageCard(lastPeriod: s.lastPeriod!, cycleLength: len),
             const SizedBox(height: 22),
             Text('Cycle ke 4 phases', style: theme.textTheme.titleMedium),
             const SizedBox(height: 10),
