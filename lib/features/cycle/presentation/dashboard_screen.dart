@@ -81,21 +81,10 @@ class DashboardScreen extends ConsumerWidget {
                   child: Text('Aaj ka din',
                       style: theme.textTheme.headlineSmall),
                 ),
-                TextButton.icon(
-                  onPressed: () => _pickDate(context, ref),
-                  icon: const Icon(Icons.edit_calendar, size: 18),
-                  label: const Text('Date badlo'),
-                ),
+                
               ],
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: ActionChip(
-                avatar: const Icon(Icons.tune, size: 18),
-                label: Text('Cycle: $len din (badlo)'),
-                onPressed: () => showCycleLengthSheet(context, ref),
-              ),
-            ),
+            SettingsPills(lastPeriod: s.lastPeriod!, cycleLength: len, onDate: () => _pickDate(context, ref), onCycle: () => showCycleLengthSheet(context, ref)),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(22),

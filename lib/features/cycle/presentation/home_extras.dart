@@ -152,3 +152,88 @@ class _Info extends StatelessWidget {
     );
   }
 }
+
+class SettingsPills extends StatelessWidget {
+  final DateTime lastPeriod;
+  final int cycleLength;
+  final VoidCallback onDate;
+  final VoidCallback onCycle;
+  const SettingsPills({
+    super.key,
+    required this.lastPeriod,
+    required this.cycleLength,
+    required this.onDate,
+    required this.onCycle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _Pill(
+            icon: Icons.event,
+            label: 'Last period',
+            value: DateFormat('d MMM').format(lastPeriod),
+            onTap: onDate,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _Pill(
+            icon: Icons.tune,
+            label: 'Cycle',
+            value: '$cycleLength din',
+            onTap: onCycle,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Pill extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final VoidCallback onTap;
+  const _Pill({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.blushDeep,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Row(
+            children: [
+              Icon(icon, size: 20, color: AppColors.rose),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(label, style: const TextStyle(fontSize: 11.5)),
+                    Text(value,
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ),
+              const Icon(Icons.edit, size: 16, color: AppColors.plum),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
