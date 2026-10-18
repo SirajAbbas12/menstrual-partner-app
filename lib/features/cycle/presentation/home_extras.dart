@@ -42,7 +42,7 @@ class _Day extends StatelessWidget {
     ).phase;
     return Column(
       children: [
-        Text(DateFormat('E').format(date).substring(0, 1),
+        Text(DateFormat('E').format(date),
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
         const SizedBox(height: 6),
         Container(

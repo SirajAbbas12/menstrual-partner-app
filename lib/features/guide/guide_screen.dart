@@ -5,6 +5,7 @@ import '../cycle/domain/cycle_calculator.dart';
 import '../cycle/domain/cycle_phase.dart';
 import '../cycle/providers/cycle_provider.dart';
 import 'wellness_card.dart';
+import 'guide_shortcuts.dart';
 
 typedef _Tips = ({List<String> dos, List<String> donts, String say});
 
@@ -98,6 +99,9 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
         children: [
           Text('Partner Guide', style: theme.textTheme.headlineSmall),
           const SizedBox(height: 4),
+          const SizedBox(height: 12),
+          const GuideShortcuts(),
+          const SizedBox(height: 18),
           const Text('Kaunsa phase dekhna hai? Chip dabao.'),
           const SizedBox(height: 14),
           Row(
