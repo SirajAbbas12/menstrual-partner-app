@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/storage/local_store.dart';
+import '../../notifications/notification_service.dart';
 
 class CycleSettings {
   final DateTime? lastPeriod;
@@ -15,6 +16,7 @@ class CycleNotifier extends Notifier<CycleSettings> {
   Future<void> save(DateTime date, int length) async {
     await LocalStore.saveCycle(date, length);
     state = CycleSettings(date, length);
+    NotificationService.refresh();
   }
 }
 
