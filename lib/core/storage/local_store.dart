@@ -29,4 +29,16 @@ class LocalStore {
 
   static Future<void> saveLog(DateTime d, Map<String, dynamic> data) =>
       _box.put(_logKey(d), data);
+
+  static String get role => (_box.get('role') as String?) ?? 'partner';
+  static String get relation => (_box.get('relation') as String?) ?? 'partner';
+  static bool get onboarded =>
+      (_box.get('onboarded') as bool?) ?? (lastPeriod != null);
+
+  static Future<void> saveProfile(String role, String relation) async {
+    await _box.put('role', role);
+    await _box.put('relation', relation);
+  }
+
+  static Future<void> setOnboarded() => _box.put('onboarded', true);
 }
