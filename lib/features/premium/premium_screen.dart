@@ -17,7 +17,6 @@ class PremiumScreen extends ConsumerStatefulWidget {
 class _PremiumScreenState extends ConsumerState<PremiumScreen> {
   bool _unlocked =
       (Hive.box('settings').get('premium', defaultValue: false)) as bool;
-  DateTime? _date;
 
   Future<void> _setPremium(bool v) async {
     await Hive.box('settings').put('premium', v);
@@ -58,8 +57,8 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
             const SizedBox(height: 12),
             const _LockedRow(
               icon: Icons.auto_awesome,
-              title: 'Traditional manyata',
-              sub: 'Sirf manoranjan ke liye, koi vaigyanik aadhar nahi',
+              title: 'Baby planning',
+              sub: 'Ovulation aur fertile window ki jaankari',
             ),
             const SizedBox(height: 26),
             FilledButton.icon(
@@ -110,11 +109,6 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
         Text('Baby planning', style: theme.textTheme.titleMedium),
         const SizedBox(height: 10),
         BabyPlanningCard(settings: s),
-        const SizedBox(height: 22),
-        Text('Traditional manyata (manoranjan)',
-            style: theme.textTheme.titleMedium),
-        const SizedBox(height: 10),
-        _gender(s),
       ],
     );
   }
@@ -183,77 +177,6 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
     );
   }
 
-  Widget _gender(CycleSettings s) {
-    const warn = _Warn(
-      'Ye sirf ek purani manyata hai, manoranjan ke liye. Vigyan ke anusaar '
-      'baby ka ladka ya ladki hona timing se tay nahi hota, aur koi bhi tarika '
-      'is par bharosemand nahi hai. Kisi faisle ke liye is par nirbhar mat raho.',
-    );
-    if (s.lastPeriod == null) {
-      return const Column(children: [
-        _Plain('Pehle Home par last period ki date chuno.'),
-        SizedBox(height: 10),
-        warn,
-      ]);
-    }
-    final len = s.cycleLength;
-    final ov = len - 14;
-    final cs = _cycleStart(s.lastPeriod!, len);
-
-    String? result;
-    if (_date != null) {
-      final day = _date!.difference(cs).inDays + 1;
-      final before = ov - day;
-      if (before >= 0 && before <= 1) {
-        result =
-            'Purani manyata: ovulation ke bilkul paas, ladke ki taraf jhukav mana jata hai.';
-      } else if (before >= 2 && before <= 4) {
-        result =
-            'Purani manyata: ovulation se 2-4 din pehle, ladki ki taraf jhukav mana jata hai.';
-      } else {
-        result = 'Is manyata mein is din ke liye koi sanket nahi hai.';
-      }
-    }
-
-    return Column(
-      children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Sambandh ki date chuno'),
-                const SizedBox(height: 10),
-                OutlinedButton.icon(
-                  onPressed: () async {
-                    final now = DateTime.now();
-                    final p = await showDatePicker(
-                      context: context,
-                      initialDate: _date ?? now,
-                      firstDate: cs,
-                      lastDate: now,
-                    );
-                    if (p != null) setState(() => _date = p);
-                  },
-                  icon: const Icon(Icons.calendar_month),
-                  label: Text(_date == null
-                      ? 'Date chuno'
-                      : DateFormat('d MMM yyyy').format(_date!)),
-                ),
-                if (result != null) ...[
-                  const SizedBox(height: 14),
-                  Text(result, style: const TextStyle(height: 1.45)),
-                ],
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        warn,
-      ],
-    );
-  }
 }
 
 class _LockedRow extends StatelessWidget {
