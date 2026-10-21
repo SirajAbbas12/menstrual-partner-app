@@ -209,7 +209,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               style: theme.textTheme.headlineSmall),
           const SizedBox(height: 8),
           const Text(
-              'Roz raat 9 baje, aaj ke mood ke hisaab se ek chhota message. Samay baad mein badal sakte ho.'),
+              'Roz do chhote message: subah 9 baje aur raat 9 baje, aaj ke mood ke hisaab se. Samay baad mein badal sakte ho.'),
           const Spacer(),
           FilledButton(
             onPressed: () => _finish(true),

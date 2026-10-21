@@ -13,8 +13,10 @@ class NotificationCard extends StatefulWidget {
 
 class _NotificationCardState extends State<NotificationCard> {
   bool _on = NotificationService.enabled;
-  TimeOfDay _time = TimeOfDay(
+  TimeOfDay _eve = TimeOfDay(
       hour: NotificationService.hour, minute: NotificationService.minute);
+  TimeOfDay _morn = TimeOfDay(
+      hour: NotificationService.mHour, minute: NotificationService.mMinute);
 
   void _msg(String t) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t)));
@@ -35,13 +37,22 @@ class _NotificationCardState extends State<NotificationCard> {
     if (mounted) setState(() => _on = v);
   }
 
-  Future<void> _pick() async {
-    final t = await showTimePicker(context: context, initialTime: _time);
+  Future<void> _pick(bool morning) async {
+    final t = await showTimePicker(
+        context: context, initialTime: morning ? _morn : _eve);
     if (t == null) return;
-    await Hive.box('settings').put('notifHour', t.hour);
-    await Hive.box('settings').put('notifMinute', t.minute);
+    final box = Hive.box('settings');
+    await box.put(morning ? 'notifMHour' : 'notifHour', t.hour);
+    await box.put(morning ? 'notifMMinute' : 'notifMinute', t.minute);
     await NotificationService.refresh();
-    if (mounted) setState(() => _time = t);
+    if (!mounted) return;
+    setState(() {
+      if (morning) {
+        _morn = t;
+      } else {
+        _eve = t;
+      }
+    });
   }
 
   @override
@@ -58,7 +69,7 @@ class _NotificationCardState extends State<NotificationCard> {
                     color: AppColors.rose),
                 const SizedBox(width: 10),
                 const Expanded(
-                  child: Text('Roz ka message notification',
+                  child: Text('Roz do message notification',
                       style: TextStyle(fontWeight: FontWeight.w700)),
                 ),
                 Switch(value: _on, onChanged: _toggle),
@@ -67,11 +78,17 @@ class _NotificationCardState extends State<NotificationCard> {
             if (_on)
               Wrap(
                 spacing: 8,
+                runSpacing: 4,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: _pick,
-                    icon: const Icon(Icons.schedule, size: 18),
-                    label: Text(_time.format(context)),
+                    onPressed: () => _pick(true),
+                    icon: const Icon(Icons.wb_sunny_outlined, size: 18),
+                    label: Text('Subah ${_morn.format(context)}'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => _pick(false),
+                    icon: const Icon(Icons.nightlight_outlined, size: 18),
+                    label: Text('Shaam ${_eve.format(context)}'),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -87,7 +104,7 @@ class _NotificationCardState extends State<NotificationCard> {
               ),
             const SizedBox(height: 6),
             const Text(
-              'Roz is samay aaj ke mood ke hisaab se ek caring message aayega.',
+              'Roz subah aur shaam, aaj ke mood ke hisaab se ek caring message aayega.',
               style: TextStyle(fontSize: 12.5),
             ),
           ],

@@ -16,6 +16,10 @@ class NotificationService {
       (Hive.box('settings').get('notifHour', defaultValue: 21)) as int;
   static int get minute =>
       (Hive.box('settings').get('notifMinute', defaultValue: 0)) as int;
+  static int get mHour =>
+      (Hive.box('settings').get('notifMHour', defaultValue: 9)) as int;
+  static int get mMinute =>
+      (Hive.box('settings').get('notifMMinute', defaultValue: 0)) as int;
 
   static Future<void> init() async {
     if (kIsWeb || _ready) return;
@@ -56,19 +60,27 @@ class NotificationService {
     if (last == null) return;
     final len = LocalStore.cycleLength;
     final now = DateTime.now();
+    final slots = <(int, int, int, String)>[
+      (100, mHour, mMinute, 'Subah ka message'),
+      (200, hour, minute, 'Shaam ka message'),
+    ];
     for (var i = 0; i < 14; i++) {
       final day = DateTime(now.year, now.month, now.day).add(Duration(days: i));
-      final at = DateTime(day.year, day.month, day.day, hour, minute);
-      if (!at.isAfter(now)) continue;
-      final msg = messageFor(date: day, lastPeriod: last, cycleLength: len);
-      await _plugin.zonedSchedule(
-        id: 100 + i,
-        title: 'Aaj ka message',
-        body: msg,
-        scheduledDate: tz.TZDateTime.from(at, tz.UTC),
-        notificationDetails: _details,
-        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      );
+      for (var k = 0; k < slots.length; k++) {
+        final sl = slots[k];
+        final at = DateTime(day.year, day.month, day.day, sl.$2, sl.$3);
+        if (!at.isAfter(now)) continue;
+        final msg = messageFor(
+            date: day, lastPeriod: last, cycleLength: len, skip: k);
+        await _plugin.zonedSchedule(
+          id: sl.$1 + i,
+          title: sl.$4,
+          body: msg,
+          scheduledDate: tz.TZDateTime.from(at, tz.UTC),
+          notificationDetails: _details,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        );
+      }
     }
   }
 
