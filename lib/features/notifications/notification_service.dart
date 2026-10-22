@@ -84,6 +84,13 @@ class NotificationService {
     }
   }
 
+  static Future<int> pendingCount() async {
+    if (kIsWeb) return 0;
+    await init();
+    final list = await _plugin.pendingNotificationRequests();
+    return list.length;
+  }
+
   static Future<void> showNow() async {
     if (kIsWeb) return;
     await init();

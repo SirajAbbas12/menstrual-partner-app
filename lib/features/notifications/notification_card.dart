@@ -102,6 +102,18 @@ class _NotificationCardState extends State<NotificationCard> {
                   ),
                 ],
               ),
+            if (_on)
+              FutureBuilder<int>(
+                future: NotificationService.pendingCount(),
+                builder: (c, snap) => Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Text(
+                    'Schedule: ${snap.data ?? '...'} notification set hain',
+                    style: const TextStyle(
+                        fontSize: 12.5, fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
             const SizedBox(height: 6),
             const Text(
               'Roz subah aur shaam, aaj ke mood ke hisaab se ek caring message aayega.',
