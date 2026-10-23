@@ -8,6 +8,7 @@ import '../providers/cycle_provider.dart';
 import 'cycle_length_sheet.dart';
 import 'home_extras.dart';
 import '../../notifications/notification_card.dart';
+import '../../feedback/feedback_screen.dart';
 import '../../messages/today_message_card.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -165,8 +166,6 @@ class DashboardScreen extends ConsumerWidget {
             InfoCards(lastPeriod: s.lastPeriod!, cycleLength: len),
             const SizedBox(height: 16),
             TodayMessageCard(lastPeriod: s.lastPeriod!, cycleLength: len),
-            const SizedBox(height: 16),
-            const NotificationCard(),
             const SizedBox(height: 22),
             Text('Cycle ke 4 phases', style: theme.textTheme.titleMedium),
             const SizedBox(height: 10),
@@ -205,6 +204,10 @@ class DashboardScreen extends ConsumerWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 16),
+            const NotificationCard(),
+            const SizedBox(height: 12),
+            const FeedbackButton(),
           ],
         ),
       ),
